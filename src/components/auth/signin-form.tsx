@@ -21,6 +21,8 @@ export function SignInForm() {
     }
   }, [searchParams]);
 
+  const callbackURL = searchParams.get('callbackURL') || '/';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,7 +53,7 @@ export function SignInForm() {
         toast.error('ইমেইল অথবা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।');
       } else {
         toast.success('সফলভাবে সাইন ইন হয়েছে।');
-        router.push('/');
+        router.push(callbackURL);
         router.refresh();
       }
     } catch {
@@ -108,7 +110,10 @@ export function SignInForm() {
 
       <div className="text-center text-xs sm:text-sm text-muted-foreground">
         <span>অ্যাকাউন্ট নেই? </span>
-        <Link href="/signup" className="text-primary font-bold hover:underline">
+        <Link
+          href={callbackURL !== '/' ? `/signup?callbackURL=${encodeURIComponent(callbackURL)}` : '/signup'}
+          className="text-primary font-bold hover:underline"
+        >
           সাইন আপ করুন
         </Link>
       </div>

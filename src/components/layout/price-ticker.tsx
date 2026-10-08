@@ -21,6 +21,7 @@ export async function PriceTicker() {
             <Link
               key={`${p.slug}-${idx}`}
               href={`/product/${p.slug}`}
+              prefetch={false}
               className="inline-flex items-center gap-2 text-xs font-medium text-foreground/90 hover:text-primary transition-colors cursor-pointer select-none"
             >
               <span>{p.image}</span>

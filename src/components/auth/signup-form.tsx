@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signUp } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 
 export function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackURL = searchParams.get('callbackURL') || '/';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -53,7 +55,7 @@ export function SignUpForm() {
         toast.error('অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।');
       } else {
         toast.success('অ্যাকাউন্ট তৈরি হয়েছে! স্বাগতম।');
-        router.push('/');
+        router.push(callbackURL);
         router.refresh();
       }
     } catch {
@@ -132,7 +134,10 @@ export function SignUpForm() {
 
       <div className="text-center text-xs sm:text-sm text-muted-foreground">
         <span>অ্যাকাউন্ট আছে? </span>
-        <Link href="/signin" className="text-primary font-bold hover:underline">
+        <Link
+          href={callbackURL !== '/' ? `/signin?callbackURL=${encodeURIComponent(callbackURL)}` : '/signin'}
+          className="text-primary font-bold hover:underline"
+        >
           সাইন ইন করুন
         </Link>
       </div>

@@ -32,6 +32,7 @@ export function ProductCard({
   return (
     <Link
       href={`/product/${product.slug}`}
+      prefetch={false}
       className={`group relative flex flex-col justify-between p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl bg-white border border-border/80 shadow-xs hover:shadow-md ${hoverBorderClass} transition-all duration-200 cursor-pointer`}
     >
       <div>
