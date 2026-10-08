@@ -58,6 +58,13 @@ export default async function ProductDetailPage({
 
   const minPrice = Math.min(...product.markets.map((m) => m.min));
   const maxPrice = Math.max(...product.markets.map((m) => m.max));
+  const avgPrice =
+    product.markets.length > 0
+      ? Math.round(
+          product.markets.reduce((acc, m) => acc + (m.min + m.max) / 2, 0) /
+            product.markets.length
+        )
+      : product.today;
 
   const isUp = product.change.dir === 'up';
   const isDown = product.change.dir === 'down';
@@ -154,7 +161,7 @@ export default async function ProductDetailPage({
           />
           <SummaryMetricCard
             title="গড় দাম"
-            amount={formatPriceBn(product.today)}
+            amount={formatPriceBn(avgPrice)}
             subtitle={`${formatUnitBn(product.unit)} এর হিসাবে`}
           />
         </div>

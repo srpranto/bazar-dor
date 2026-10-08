@@ -38,7 +38,9 @@ export async function Navbar() {
         </div>
       </div>
 
-      <PriceTicker />
+      <Suspense fallback={<div className="h-9 w-full bg-secondary/30 animate-pulse border-y border-border/80" />}>
+        <PriceTicker />
+      </Suspense>
     </header>
   );
 }

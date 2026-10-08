@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type { Product, Category } from '@/types/api';
 
 const PRIMARY_BASE = process.env.BAZARDOR_API_PRIMARY || 'https://api.api-store.workers.dev/api/bazardor';
@@ -8,7 +9,10 @@ async function fetchWithFallback<T>(endpoint: string, options?: RequestInit): Pr
   const fallbackUrl = `${FALLBACK_BASE}${endpoint}`;
 
   try {
-    const res = await fetch(primaryUrl, options);
+    const res = await fetch(primaryUrl, {
+      ...options,
+      signal: options?.signal ?? AbortSignal.timeout(2500),
+    });
     if (!res.ok) {
       throw new Error(`Primary request failed with status: ${res.status}`);
     }
@@ -24,23 +28,23 @@ async function fetchWithFallback<T>(endpoint: string, options?: RequestInit): Pr
   }
 }
 
-export async function getCategories(): Promise<Category[]> {
+export const getCategories = cache(async function getCategories(): Promise<Category[]> {
   return fetchWithFallback<Category[]>('/categories', {
     next: { revalidate: 3600 },
   });
-}
+});
 
-export async function getProducts(categorySlug?: string): Promise<Product[]> {
+export const getProducts = cache(async function getProducts(categorySlug?: string): Promise<Product[]> {
   const query = categorySlug ? `?category=${encodeURIComponent(categorySlug)}` : '';
   return fetchWithFallback<Product[]>(`/products${query}`, {
     next: { revalidate: 300 },
   });
-}
+});
 
-export async function getProductBySlug(identifier: string): Promise<Product | null> {
+export const getProductBySlug = cache(async function getProductBySlug(identifier: string): Promise<Product | null> {
   const products = await getProducts();
   const match = products.find(
     (p) => p.slug === identifier || p.id.toString() === identifier
   );
   return match ?? null;
-}
+});
