@@ -59,15 +59,26 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </div>
           </div>
 
-          <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md flex items-center justify-center">
-            <Image
-              src="/bazar-hero.png"
-              alt="বাজার দর"
-              width={350}
-              height={290}
-              preload
-              className="w-full h-auto object-contain drop-shadow-sm"
-            />
+          <div className="relative flex items-center justify-center lg:justify-end">
+            <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-br from-primary/15 via-emerald-400/10 to-teal-200/20 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative rounded-3xl border border-white/80 bg-white/90 backdrop-blur-md p-4 sm:p-6 shadow-xl shadow-primary/5 flex flex-col items-center">
+              <div className="relative flex items-center justify-center p-2 sm:p-4">
+                <Image
+                  src="/bazar-hero.png"
+                  alt="বাজার দর"
+                  width={280}
+                  height={234}
+                  preload
+                  className="w-auto h-auto max-h-52 sm:max-h-60 object-contain drop-shadow-md select-none transition-transform hover:scale-105 duration-300"
+                />
+              </div>
+
+              <div className="mt-1 sm:mt-2 flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/80 border border-border/80 text-[11px] sm:text-xs font-semibold text-primary">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>১২টি বাজার থেকে লাইভ আপডেট</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
